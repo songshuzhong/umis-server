@@ -17,13 +17,18 @@ export class PageController {
     return this.pageService.findOne(query.id);
   }
 
+  @Get('/pages')
+  async findAll(@Query() query): Promise<any> {
+    return await this.pageService.findAllByPagination(query.id, query.pageSize, query.pageIndex);
+  }
+
   @Put('/page')
   updateOne(@Body() entity: any): Promise<Page> {
     return this.pageService.updateOne(entity);
   }
 
   @Delete('/page')
-  remove(@Param('id') id: string): Promise<void> {
-    return this.pageService.remove(id);
+  remove(@Query() query): Promise<void> {
+    return this.pageService.remove(query.id);
   }
 }

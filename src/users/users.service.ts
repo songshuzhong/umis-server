@@ -25,8 +25,12 @@ export class UsersService {
     return user.save();
   }
 
-  findAll(): Promise<User[]> {
-    return this.userModel.findAll();
+  findAll(pageSize, pageIndex): Promise<any> {
+    return this.userModel.findAndCountAll({
+      order: [['id', 'desc']],
+      limit: Number(pageSize),
+      offset: (Number(pageIndex) - 1) * Number(pageSize)
+    });
   }
 
   findOne(uid: string): Promise<User> {

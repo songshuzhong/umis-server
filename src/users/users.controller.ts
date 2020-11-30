@@ -13,9 +13,9 @@ export class UsersController {
   }
 
   @Get('/users')
-  async findAll(): Promise<any> {
-    const rows = await this.usersService.findAll();
-    return { rows };
+  async findAll(@Query('pageSize') pageSize: string, @Query('pageIndex') pageIndex: string): Promise<any> {
+    const {rows, count} = await this.usersService.findAll(pageSize, pageIndex);
+    return { rows, count };
   }
 
   @Get('/user')

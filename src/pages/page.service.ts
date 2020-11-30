@@ -39,6 +39,15 @@ export class PageService {
     return this.pageModel.findAll({where: {projectId}});
   }
 
+  findAllByPagination(projectId, pageSize, pageIndex): Promise<any> {
+    return this.pageModel.findAndCountAll({
+      where: {projectId},
+      order: [['id', 'desc']],
+      limit: Number(pageSize),
+      offset: (Number(pageIndex) - 1) * Number(pageSize)
+    });
+  }
+
   async remove(id: string): Promise<void> {
     const project = await this.findOne(id);
     await project.destroy();

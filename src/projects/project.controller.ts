@@ -13,6 +13,21 @@ export class ProjectController {
     return {rows}
   }
 
+  @Get('/combo')
+  async findCombo(): Promise<any> {
+    const rows = await this.projectService.findAll();
+    const result = rows.map((item: any) => {
+      const combo = {
+        value: '',
+        text: ''
+      };
+      combo.value = item.projectId;
+      combo.text = item.projectTitle;
+      return combo;
+    });
+    return {rows: result}
+  }
+
   @Post()
   create(@Body() entity: any): Promise<Project> {
     return this.projectService.create(entity);
