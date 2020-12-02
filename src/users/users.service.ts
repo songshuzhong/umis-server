@@ -5,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.model';
 
+// @ts-ignore
+const Op = Sequelize.Op;
 @Injectable()
 export class UsersService {
   constructor(
@@ -25,8 +27,13 @@ export class UsersService {
     return user.save();
   }
 
-  findAll(pageSize, pageIndex): Promise<any> {
+  findAll(pageSize, pageIndex, name): Promise<any> {
     return this.userModel.findAndCountAll({
+      where: {
+        name: {
+          [Op.like]: `%${name || ''}%`
+        }
+      },
       order: [['id', 'desc']],
       limit: Number(pageSize),
       offset: (Number(pageIndex) - 1) * Number(pageSize)
@@ -39,6 +46,10 @@ export class UsersService {
         uid,
       },
     });
+  }
+
+  updateOne(entity: User): Promise<any> {
+    return this.userModel.update(entity, {where: {uid: entity.uid || ''}});
   }
 
   async remove(id: string): Promise<void> {

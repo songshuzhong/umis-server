@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Query, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Query, Post, Put } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { User } from './user.model';
 import { UsersService } from './users.service';
@@ -12,9 +12,14 @@ export class UsersController {
     return this.usersService.create(createUserDto);
   }
 
+  @Put('/user')
+  update(@Body() entity: User): Promise<User> {
+    return this.usersService.updateOne(entity);
+  }
+
   @Get('/users')
-  async findAll(@Query('pageSize') pageSize: string, @Query('pageIndex') pageIndex: string): Promise<any> {
-    const {rows, count} = await this.usersService.findAll(pageSize, pageIndex);
+  async findAll(@Query('pageSize') pageSize: string, @Query('pageIndex') pageIndex: string, @Query('name') name: string): Promise<any> {
+    const {rows, count} = await this.usersService.findAll(pageSize, pageIndex, name);
     return { rows, count };
   }
 

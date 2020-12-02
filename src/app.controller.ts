@@ -34,4 +34,30 @@ export class AppController {
     // return res.render('index', {message: initData[0]});
     return {initData: JSON.stringify(initData)};
   }
+
+  @Get('/api/menu')
+  async menu(): Promise<any> {
+    const projects = await this.projectService.findAll();
+
+    return await Promise.all(projects.map(async (item) => {
+      const pages = await this.pageService.findAll(item.projectId);
+      return {
+        renderer: 'mis-menu-submenu',
+        name: item.projectName,
+        title: item.projectTitle,
+        icon: item.projectIcon,
+        body: pages.map(page => {
+          return {
+            renderer: 'mis-menu-item',
+            name: page.pageName,
+            title: page.pageTitle,
+            icon: page.pageIcon,
+            pageId: page.pageId,
+            pageDesc: page.pageDesc,
+            schemaUrl: `/api/page`
+          }
+        })
+      };
+    }));
+  }
 }
