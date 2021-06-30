@@ -34,6 +34,14 @@ export class ProjectService {
     return this.projectModel.findAll();
   }
 
+  async findAllByGroupId(groupId: string): Promise<Project[]> {
+    return this.projectModel.findAll({
+      where: {
+        groupId,
+      },
+    });
+  }
+
   async remove(id: string): Promise<void> {
     const project = await this.findOne(id);
     await project.destroy();

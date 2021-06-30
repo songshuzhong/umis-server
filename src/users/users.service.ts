@@ -27,14 +27,17 @@ export class UsersService {
     return user.save();
   }
 
-  findAll(pageSize, pageIndex, name): Promise<any> {
+  findAll(pageSize, pageIndex, name, sex): Promise<any> {
     return this.userModel.findAndCountAll({
       where: {
         name: {
           [Op.like]: `%${name || ''}%`
+        },
+        sex: {
+          [Op.like]: `%${sex || ''}%`
         }
       },
-      order: [['id', 'desc']],
+      order: [['createdAt', 'desc']],
       limit: Number(pageSize),
       offset: (Number(pageIndex) - 1) * Number(pageSize)
     });

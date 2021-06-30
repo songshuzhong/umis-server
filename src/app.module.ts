@@ -3,6 +3,8 @@ import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/users.module';
 import { PageModule } from './pages/page.module';
 import { ProjectModule } from './projects/project.module';
+import { GroupModule } from './group/group.module';
+import { UsersProjectsModule } from './usersProjects/usersProjects.module';
 import { AppController } from './app.controller';
 
 @Module({
@@ -19,7 +21,9 @@ import { AppController } from './app.controller';
     }),
     UsersModule,
     PageModule,
-    ProjectModule
+    ProjectModule,
+    GroupModule,
+    UsersProjectsModule
   ],
   controllers: [AppController],
   providers: [],

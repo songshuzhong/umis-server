@@ -7,29 +7,50 @@ import { UsersService } from './users.service';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  sleep(ms) {
+    return new Promise(resovle => {
+      const timer = setTimeout(function () {
+        clearTimeout(timer);
+        resovle();
+      }, ms);
+    });
+  }
   @Post('/user')
-  create(@Body() createUserDto: CreateUserDto): Promise<User> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<User> {
+    await this.sleep(1000);
     return this.usersService.create(createUserDto);
   }
 
   @Put('/user')
-  update(@Body() entity: User): Promise<User> {
+  async update(@Body() entity: User): Promise<User> {
+    await this.sleep(1000);
     return this.usersService.updateOne(entity);
   }
 
   @Get('/users')
-  async findAll(@Query('pageSize') pageSize: string, @Query('pageIndex') pageIndex: string, @Query('name') name: string): Promise<any> {
-    const {rows, count} = await this.usersService.findAll(pageSize, pageIndex, name);
+  async findAll(
+    @Query('pageSize') pageSize: string,
+    @Query('pageIndex') pageIndex: string,
+    @Query('perPage') perPage: string,
+    @Query('page') page: string,
+    @Query('name') name: string,
+    @Query('sex') sex: string
+  ): Promise<any> {
+    const currentPage = pageIndex || page;
+    const size = pageSize || perPage;
+    const {rows, count} = await this.usersService.findAll(size, currentPage, name, sex);
     return { rows, count };
   }
 
   @Get('/user')
-  findOne(@Query('uid') uid: string): Promise<User> {
+  async findOne(@Query('uid') uid: string): Promise<User> {
+    await this.sleep(2000);
     return this.usersService.findOne(uid);
   }
 
   @Delete('/user')
-  remove(@Query('uid') uid: string): Promise<void> {
+  async remove(@Query('uid') uid: string): Promise<void> {
+    await this.sleep(6000);
     return this.usersService.remove(uid);
   }
 }

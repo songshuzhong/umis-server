@@ -42,7 +42,7 @@ export class PageService {
   findAllByPagination(projectId, pageSize, pageIndex): Promise<any> {
     return this.pageModel.findAndCountAll({
       where: {projectId},
-      order: [['id', 'desc']],
+      order: [['createdAt', 'desc']],
       limit: Number(pageSize),
       offset: (Number(pageIndex) - 1) * Number(pageSize)
     });

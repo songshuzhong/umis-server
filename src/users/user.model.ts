@@ -1,15 +1,21 @@
-import { Column, Model, Table } from 'sequelize-typescript';
+import { PrimaryKey, Column, Model, Table, BelongsToMany } from 'sequelize-typescript';
+import { Project } from '../projects/project.model';
+import { UsersProjects } from '../usersProjects/usersProjects.model';
 
 @Table
 export class User extends Model<User> {
-  @Column
-  name: string;
-
+  @PrimaryKey
   @Column
   uid: string;
 
   @Column
+  name: string;
+
+  @Column
   email: string;
+
+  @Column
+  phone: string;
 
   @Column
   province: string;
@@ -25,4 +31,7 @@ export class User extends Model<User> {
 
   @Column
   age: string;
+
+  @BelongsToMany(() => Project, () => UsersProjects)
+  projects: Project[];
 }

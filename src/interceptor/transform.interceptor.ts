@@ -20,8 +20,8 @@ export class TransformInterceptor<T>
       map(data => {
         return {
           data,
-          code: 0,
-          message: '请求成功',
+          status: 0,
+          msg: '请求成功',
         };
       }),
     );
